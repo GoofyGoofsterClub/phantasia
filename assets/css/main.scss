@@ -23,11 +23,15 @@ body {
     .main {
         flex: 1;
         padding: 1rem;
+        padding-bottom: 84px;
     }
 
     .footer {
         z-index: 10;
         display: flex;
+        position: fixed;
+        left: 0;
+        bottom: 0;
         justify-content: space-between;
         align-items: center;
         width: 100%;
@@ -153,5 +157,44 @@ body {
         padding: 0;
         margin: 0;
         color: #afccff;
+    }
+}
+
+.central-content {
+    margin: 0 auto;
+    width: 75%;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #afccff;
+    }
+
+    .slim-content {
+        max-width: 70%;
+
+        p {
+            text-justify: inter-word;
+        }
+    }
+}
+
+/* You can scope this globally */
+.page {
+    position: relative;
+    overflow: hidden;
+}
+
+p>a {
+    padding: 0 4px;
+    color: #afccff;
+
+    &:hover {
+        background: #afccff;
+        color: #0c0f14;
+        text-decoration: none;
     }
 }
