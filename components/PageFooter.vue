@@ -1,8 +1,8 @@
 <template>
   <div class="footer">
-    <NuxtLink href="#" :class="{ active: isRouteActive('/') }">Home</NuxtLink>
-    <NuxtLink href="#" :class="{ active: isRouteActive('/about') }">About</NuxtLink>
-    <NuxtLink href="#" :class="{ active: isRouteActive('/faq') }">FAQ</NuxtLink>
+    <NuxtLink href="/" :class="{ active: isRouteActive('/') }">Home</NuxtLink>
+    <NuxtLink href="/about" :class="{ active: isRouteActive('/about') }">About</NuxtLink>
+    <NuxtLink href="/faq" :class="{ active: isRouteActive('/faq') }">FAQ</NuxtLink>
     <NuxtLink href="#" class="right-aligned-button" @click.prevent="toggleDashboard" :class="{ active: isDashboardLoginPanelActive }">Dashboard</NuxtLink>
     <div class="dashboard-login-board" :class="{ active: isDashboardLoginPanelActive }">
       <div>
