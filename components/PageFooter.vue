@@ -3,7 +3,7 @@
     <NuxtLink href="/" draggable="false" :class="{ active: isRouteActive('/') }">Home</NuxtLink>
     <NuxtLink href="/about" draggable="false" :class="{ active: isRouteActive('/about') }">About</NuxtLink>
     <NuxtLink href="/faq" draggable="false" :class="{ active: isRouteActive('/faq') }">FAQ</NuxtLink>
-    <NuxtLink href="#" draggable="false" class="right-aligned-button" @click.prevent="toggleDashboard" :class="{ active: isDashboardLoginPanelActive }">Dashboard</NuxtLink>
+    <NuxtLink href="#" draggable="false" class="right-aligned-button" @click.prevent="toggleDashboard" :class="{ active: isDashboardLoginPanelActive || isRouteActive('/dashboard') }">Dashboard</NuxtLink>
     <div class="dashboard-login-board" :class="{ active: isDashboardLoginPanelActive }">
       <div>
         <input placeholder="Access Key" type="password" :disabled="isAuthContentDisabled" v-show="!isAuthContentHidden">
@@ -22,6 +22,7 @@ const isDashboardLoginPanelActive = ref(false)
 const isAuthContentDisabled = ref(false)
 
 const toggleDashboard = () => {
+  if(isRouteActive("/dashboard")) return;
   isDashboardLoginPanelActive.value = !isDashboardLoginPanelActive.value
 }
 

@@ -212,3 +212,49 @@ p>a {
         text-decoration: none;
     }
 }
+
+.card
+{
+    padding: 16px;
+    background: $slightly-darker-background-color;
+    border: 1px solid $slightly-darker-background-color-highlight;
+    border-radius: 8px;
+
+    &.inline
+    {
+        display: inline-block;
+    }
+
+    .header
+    {
+        p
+        {
+            padding: 0;
+            padding-bottom: 16px;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .delimiter
+        {
+            width: 100%;
+            height: 1px;
+            background: $slightly-darker-background-color-highlight;
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.flex-block
+{
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.just-a-block
+{
+    display: block;
+}
