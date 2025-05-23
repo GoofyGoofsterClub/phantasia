@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     '@/assets/css/main.scss'
   ],
   app: {
-    buildAssetsDir: 'assets',
+    buildAssetsDir: '_assets',
     head: {
       title: "uwu.so",
       charset: 'utf-16',
