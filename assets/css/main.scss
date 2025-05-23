@@ -1,8 +1,10 @@
+@import "colors";
+
 html,
 body {
     padding: 0;
     margin: 0;
-    background: #0c0f14;
+    background: $background-color;
     overflow-x: hidden;
 }
 
@@ -36,8 +38,8 @@ body {
         align-items: center;
         width: 100%;
         height: 84px;
-        border-top: 1px solid #afccff;
-        background-color: #0c0f14;
+        border-top: 1px solid $highlight-color;
+        background-color: $background-color;
 
         a,
         button {
@@ -45,7 +47,7 @@ body {
             min-width: 96px;
             border: none;
             outline: none;
-            border-right: 1px solid #afccff;
+            border-right: 1px solid $highlight-color;
             align-items: center;
             justify-content: center;
             height: 100%;
@@ -58,26 +60,26 @@ body {
                 border-right: none;
                 margin-left: auto;
                 border-right: none;
-                border-left: 1px solid #afccff;
+                border-left: 1px solid $highlight-color;
             }
 
             &:hover {
-                color: #0c0f14;
-                background: #afccff;
+                color: $background-color;
+                background: $highlight-color;
             }
 
             &.active {
-                color: #0c0f14;
-                background-color: #afccff;
+                color: $background-color;
+                background-color: $highlight-color;
             }
         }
 
         .dashboard-login-board {
             position: absolute;
-            border-left: solid 1px #afccff;
-            border-top: solid 1px #afccff;
-            border-bottom: solid 1px #afccff;
-            background: #0c0f14;
+            border-left: solid 1px $highlight-color;
+            border-top: solid 1px $highlight-color;
+            border-bottom: solid 1px $highlight-color;
+            background: $background-color;
             right: 0;
             bottom: 84px;
             width: 400px;
@@ -107,8 +109,8 @@ body {
 
                 input {
                     flex: 1;
-                    background-color: #0c0f14;
-                    border: 1px solid #afccff;
+                    background-color: $background-color;
+                    border: 1px solid $highlight-color;
                     margin: 4px;
                     padding: 6px 8px;
                     outline: none;
@@ -120,23 +122,36 @@ body {
                     &:focus {
                         opacity: 1;
                     }
+
+                    &:disabled {
+                        opacity: 0.25;
+                    }
                 }
 
                 button {
                     margin: 4px;
                     display: inline-block;
-                    background: #0c0f14;
-                    border: 1px solid #afccff;
+                    background: $background-color;
+                    color: #afccfa;
+                    border: 1px solid $highlight-color;
                     padding: 6px 8px;
 
                     opacity: 0.45;
 
                     transition: 0.2s;
 
-                    &:hover {
+                    &:not(:disabled):hover {
                         opacity: 1;
-                        background-color: #afccff;
-                        color: #0c0f14;
+                        background-color: $highlight-color;
+                        color: $background-color;
+                    }
+
+                    &:disabled {
+                        opacity: 0.25;
+
+                        &:hover {
+                            color: #afccfa;
+                        }
                     }
                 }
             }
@@ -156,7 +171,7 @@ body {
         max-width: 50%;
         padding: 0;
         margin: 0;
-        color: #afccff;
+        color: $highlight-color;
     }
 }
 
@@ -170,7 +185,7 @@ body {
     h4,
     h5,
     h6 {
-        color: #afccff;
+        color: $highlight-color;
     }
 
     .slim-content {
@@ -189,11 +204,11 @@ body {
 
 p>a {
     padding: 0 4px;
-    color: #afccff;
+    color: $highlight-color;
 
     &:hover {
-        background: #afccff;
-        color: #0c0f14;
+        background: $highlight-color;
+        color: $background-color;
         text-decoration: none;
     }
 }
