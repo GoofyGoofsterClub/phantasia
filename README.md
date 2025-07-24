@@ -20,69 +20,16 @@ For code standards use the config provided for `Prettier`.
 Make sure to install dependencies:
 
 ```bash
-# npm
-npm install
+#  Install NodeJS, Python, PostgreSQL.
+# ...
 
-# pnpm
-pnpm install
+# install and run node dependencies
+cd frontend
+pnpm install # or npm install
+pnpm run dev
 
-# yarn
-yarn install
-
-# bun
-bun install
+# install python dependencies and run api
+cd api
+pip install -r requirements.txt
+uvicorn src.main:app --reload
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
