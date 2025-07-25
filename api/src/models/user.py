@@ -12,7 +12,7 @@ class User(Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
     views = fields.IntField(default=0)
-    uploads = fields.IntField(default=0)
+    upload_count = fields.IntField(default=0)
     twitch_user_id = fields.CharField(max_length=255, null=True)
 
     def encrypt_access_key(self):
