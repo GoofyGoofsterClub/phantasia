@@ -34,6 +34,8 @@ pip install -r requirements.txt
 uvicorn src.main:app --reload
 ```
 
+When working locally, dont forget to run `aerich upgrade` in `api` directory to migrate database changes to your local environment.
+
 ### Nginx Setup
 
 * `@` / `www` - frontend (TypeScript/Nuxt)

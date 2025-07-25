@@ -14,6 +14,22 @@ services:
       dockerfile: ./Dockerfile
     container_name: phantasia-api
     restart: unless-stopped
+    depends_on:
+      - db
+      - seaweed-s3
+    environment:
+      - DATABASE_URL=postgres://phantasiauser:REPLACETHISWITHSOMETHINGSECURE@db:5432/phantasia
+
+  db:
+    image: postgres:16-alpine
+    container_name: phantasia-db
+    restart: always
+    environment:
+      - POSTGRES_USER=phantasiauser
+      - POSTGRES_PASSWORD=REPLACETHISWITHSOMETHINGSECURE
+      - POSTGRES_DB=phantasia
+    volumes:
+      - db:/var/lib/postgresql/data
 
   phantasia-nginx:
     image: nginx:1.29.0-alpine
