@@ -1,3 +1,12 @@
+x-s3-data: &s3-defaults
+  AWS_ACCESS_KEY_ID: "REPLACETHISWITHSOMETHINGSECURE"
+  AWS_SECRET_ACCESS_KEY: "REPLACETHISWITHSOMETHINGSECURE"
+
+x-postgres-data: &postgres-defaults
+  POSTGRES_USER: "phantasiauser"
+  POSTGRES_PASSWORD: "REPLACETHISWITHSOMETHINGSECURE"
+  POSTGRES_DB: "phantasia"
+
 services:
   phantasia-frontend:
     # image:
@@ -6,6 +15,8 @@ services:
       dockerfile: ./Dockerfile
     container_name: phantasia-frontend
     restart: unless-stopped
+    depends_on:
+      - phantasia-api
     
   phantasia-api:
     # image:
@@ -18,16 +29,18 @@ services:
       - db
       - seaweed-s3
     environment:
-      - DATABASE_URL=postgres://phantasiauser:REPLACETHISWITHSOMETHINGSECURE@db:5432/phantasia
+      <<: 
+        - *s3-defaults
+        - *postgres-defaults
+      S3_ENDPOINT: "http://seaweed-s3:8080"
 
   db:
     image: postgres:16-alpine
     container_name: phantasia-db
     restart: always
     environment:
-      - POSTGRES_USER=phantasiauser
-      - POSTGRES_PASSWORD=REPLACETHISWITHSOMETHINGSECURE
-      - POSTGRES_DB=phantasia
+      <<:
+        - *postgres-defaults
     volumes:
       - db:/var/lib/postgresql/data
 
@@ -82,9 +95,10 @@ services:
       - "8333"
       - "19333"
     environment:
-      - AWS_ACCESS_KEY_ID=REPLACETHISWITHSOMETHINGSECURE
-      - AWS_SECRET_ACCESS_KEY=REPLACETHISWITHSOMETHINGSECURE
+      <<: 
+        - *s3-defaults
 
 volumes:
   db:
   seaweed_data:
+
