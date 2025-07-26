@@ -5,4 +5,4 @@ class SuccessMessage(BaseModel):
 
 class DescriptiveSuccessMessage(BaseModel):
     success: bool
-    message: str
+    message: str | object | list | None
