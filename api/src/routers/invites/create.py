@@ -14,11 +14,11 @@ router = APIRouter(prefix="/invites", tags=["Invites"])
 class NewInvitationCreated(BaseModel):
     inviation_code: str
 
-@router.get("/create", status_code=201,
+@router.post("/create", status_code=201,
             summary="Creates an invitation code for a new user",
             description="Creates an invitation code for a new user",
             responses={
-                status.HTTP_200_OK: {"model": NewInvitationCreated},
+                status.HTTP_201_OK: {"model": NewInvitationCreated},
                 status.HTTP_400_BAD_REQUEST: {"model": ErrorDetails}
             })
 @requires_auth(permissions_required=[UserPermissions.INVITE_CREATE])

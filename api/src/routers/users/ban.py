@@ -10,7 +10,7 @@ from src.internal.permissions import UserPermissions
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-@router.get("/ban", status_code=200,
+@router.patch("/ban", status_code=200,
             summary="Creates a new ban entry for a user",
             description="Creates a new ban entry for a user",
             responses={

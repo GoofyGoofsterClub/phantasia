@@ -13,7 +13,7 @@ self_inflicted_allowed = ["username"]
 
 prohibited_change = ["permissions", "badges"]
 
-@router.get("/modify", status_code=200, response_model=None)
+@router.patch("/modify", status_code=200, response_model=None)
 @requires_auth()
 async def modify_user(target: Optional[str], field: str, value: str | int | bool, response: Response, *,
     user: User):
