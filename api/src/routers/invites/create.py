@@ -14,7 +14,7 @@ router = APIRouter(prefix="/invites", tags=["Invites"])
 class NewInvitationCreated(BaseModel):
     inviation_code: str
 
-@router.post("/create", status_code=201,
+@router.put("/create", status_code=201,
             summary="Creates an invitation code for a new user",
             description="Creates an invitation code for a new user",
             responses={
