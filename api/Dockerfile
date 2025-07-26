@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Install pip requirements
-RUN apk add --no-cache build-base postgresql-dev libffi-dev
+RUN apk add --no-cache build-base postgresql-dev libffi-dev curl
 
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
