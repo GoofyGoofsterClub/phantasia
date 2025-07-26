@@ -18,7 +18,7 @@ class NewInvitationCreated(BaseModel):
             summary="Creates an invitation code for a new user",
             description="Creates an invitation code for a new user",
             responses={
-                status.HTTP_201_OK: {"model": NewInvitationCreated},
+                status.HTTP_201_CREATED: {"model": NewInvitationCreated},
                 status.HTTP_400_BAD_REQUEST: {"model": ErrorDetails}
             })
 @requires_auth(permissions_required=[UserPermissions.INVITE_CREATE])
