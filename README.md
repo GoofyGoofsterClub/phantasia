@@ -38,17 +38,51 @@ When working locally, dont forget to run `aerich upgrade` in `api` directory to 
 
 ### Nginx Setup
 
+For local development it's recommended to setup local domains through mDNS or `/etc/hosts`.
+
+Needed configuration for `/etc/hosts` is provided in `nginx/local.hosts` file.
+
 * `@` / `www` - frontend (TypeScript/Nuxt)
 * `api` - API interface (Python/FastAPI)
 * `i` - Filesystem (SeaweedFS/S3)
 
+After setting up local domains it is advised to setup local certificates using `mkcert`:
+
+```bash
+$ mkcert -install
+$ mkcert uwu.local api.uwu.local i.uwu.local
+$ mv uwu.local+2.pem uwu.local+2-key.pem ./nginx/certificates/
+```
+
 #### Production
 
-Point `uwu.so`, `www.uwu.so`, `i.uwu.so`, and `api.uwu.so` to the server.
+Point `uwu.so`, `www.uwu.so`, `i.uwu.so`, and `api.uwu.so` to the server. Any additional domains need to be specified within `default.conf` following the same schema. Having different subdomains will result in unexpected errors.
+
+After pointing domains to the correct server you will have to copy your SSL certificates in `nginx/certificates` and be renamed to `uwu.local+2.pem` (certificate) and `uwu.local+2-key.pem` (private key) respectively.
+
+If you do not have SSL certificate generate it using `mkcert`, like this:
+
+```bash
+$ mkcert uwu.so www.uwu.so api.uwu.so i.uwu.so
+```
 
 #### Staging
 
-Point `staging.uwu.so`, `i.staging.uwu.so`, and `api.staging.uwu.so` to the server.
+Point `staging.uwu.so`, `i.staging.uwu.so`, and `api.staging.uwu.so` to the server. Any additional domains need to be specified within `default.conf` following the same schema. Having different subdomains will result in unexpected errors.
+
+Make sure that your SSL certificate allows for use of the specified subdomains.
+
+If you do not have SSL certificate generate it using `mkcert`, like this:
+
+```bash
+$ mkcert staging.uwu.so api.staging.uwu.so i.staging.uwu.so
+```
+
+or if you want to host both production and staging on one server please use:
+
+```bash
+$ mkcert uwu.so www.uwu.so staging.uwu.so api.uwu.so api.staging.uwu.so i.uwu.so i.staging.uwu.so
+```
 
 ## Migrating from Imagination Server
 
