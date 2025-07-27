@@ -10,7 +10,7 @@ def find_model_modules(base_package="src.models", base_path="src/models"):
 
 model_modules = find_model_modules()
 
-database_url = f"postgres://{os.environ['POSTGRES_USER']}:{os.environ['POSTGRES_PASSWORD']}@db:5432/{os.environ['POSTGRES_DB']}"
+database_url = f"postgres://{os.environ['POSTGRES_USER']}:{os.environ['POSTGRES_PASSWORD']}@{os.environ['POSTGRES_HOST']}:5432/{os.environ['POSTGRES_DB']}"
 
 TORTOISE_ORM = {
     "connections": {

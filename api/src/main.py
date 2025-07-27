@@ -1,10 +1,13 @@
 import sys
 import importlib
 import pkgutil
+import os
+import json
 from fastapi import FastAPI
 from pathlib import Path
 from tortoise.contrib.fastapi import register_tortoise
-
+from botocore.exceptions import ClientError
+from src.internal.s3 import get_s3_client
 from src.db.tortoise_config import TORTOISE_ORM
 
 app = FastAPI(
@@ -43,6 +46,48 @@ def load_routers(path: Path, package: str):
 
 
 load_routers(ROUTERS_DIR, ROUTERS_PACKAGE)
+
+@app.on_event("startup")
+async def startup_event():
+    pass
+    s3 = get_s3_client()
+    s3_domain = os.getenv("S3_DOMAIN")
+    bucket_name = os.getenv("S3_BUCKET_NAME")
+    try:
+        s3.head_bucket(Bucket=bucket_name)
+        print(f"S3 bucket '{bucket_name}' already exists.")
+    except ClientError as e:
+        error_code = int(e.response["Error"]["Code"])
+        if error_code == 404:
+            s3.create_bucket(Bucket=bucket_name)
+            print(f"S3 bucket '{bucket_name}' created.")
+        else:
+            raise RuntimeError(f"Error checking/creating bucket: {e}")
+    public_read_policy = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "AllowPublicRead",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": ["s3:GetObject"],
+                "Resource": [f"arn:aws:s3:::{bucket_name}/*"]
+            }
+        ]
+    }
+
+    try:
+        s3.put_bucket_policy(
+            Bucket=bucket_name,
+            Policy=json.dumps(public_read_policy)
+        )
+        print(f"Public-read policy applied to bucket '{bucket_name}'.")
+    except ClientError as e:
+        raise RuntimeError(f"Error applying bucket policy: {e}")
+
+    app.state.s3_client = s3
+    app.state.s3_bucket = bucket_name
+    app.state.s3_domain = s3_domain
 
 
 @app.get("/")

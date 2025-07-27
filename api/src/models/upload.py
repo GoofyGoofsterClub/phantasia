@@ -7,6 +7,7 @@ class Upload(Model):
     id = fields.IntField(pk=True, generated=True, unique=True, null=False)
     user = fields.ForeignKeyField("models.User", related_name="uploads")
     filename = fields.CharField(max_length=255)
+    visual_name = fields.CharField(max_length=255)
     mimetype = fields.CharField(max_length=255)
     file_hash = fields.CharField(max_length=255)
     internal_name = fields.CharField(max_length=255)
