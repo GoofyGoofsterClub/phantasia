@@ -1,6 +1,8 @@
+import io
 from fastapi import APIRouter, Response, status, File, UploadFile, Request
 from pydantic import BaseModel
 from typing import List
+from PIL import Image
 
 from src.models.user import User
 from src.models.upload import Upload
@@ -15,6 +17,20 @@ class NewUploadCreated(BaseModel):
     direct_link: str
     visual_link: str
 
+async def _optimize_image(image: bytes, file_format: str, width: int = 1920, height: int = 1920, resize: bool = False) -> bytes:
+    img = Image.open(io.BytesIO(image))
+    img_format = "JPEG" if img.mode != "RGBA" else "WEBP"
+    img = img.convert("RGB") if img.mode != "RGBA" else img
+
+    max_size = (width, height)
+
+    if resize:
+        img.thumbnail(max_size, Image.ANTIALIAS)
+    image_buffer = io.BytesIO()
+    img.save(image_buffer, img_format, optimize=True, quality=85)
+    image_buffer.seek(0)
+    return image_buffer.getvalue()
+
 @router.post("/create", status_code=201,
             summary="Uploads a new file",
             description="Uploads a new file",
@@ -28,6 +44,16 @@ async def create_new_upload(request: Request, file: UploadFile, response: Respon
     s3 = request.app.state.s3_client
     s3_bucket = request.app.state.s3_bucket
     s3_domain = request.app.state.s3_domain
+
+    if file.content_type in ["image/jpeg", "image/png", "image/webp"]:
+        image = await file.read()
+        try:
+            image = await _optimize_image(image, file.content_type.split('/')[-1])
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid image file")
+        
+        file.file = io.BytesIO(image)
+        file.size = len(image)
 
     internal_name = f"{user.username}/{generate_random_string(16)}.{file.filename.split('.')[-1]}"
     s3.upload_fileobj(file.file, s3_bucket, internal_name, ExtraArgs={"ACL": "public-read"})
