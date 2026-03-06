@@ -71,8 +71,28 @@ services:
         - *s3-defaults
     command: server /data
 
+  loki:
+    image: grafana/loki
+    container_name: phantasia-loki
+    restart: always
+    ports:
+      - 3100:3100
+    volumes:
+      - loki_data:/loki
+
+  prometheus:
+    image: prom/prometheus
+    container_name: phantasia-prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus_data:/prometheus
+
 
 volumes:
   db:
   minio_data:
+  loki_data:
+  prometheus_data:
 
