@@ -82,6 +82,10 @@ For any exposed domains it is recommended to use `certbot` instead of `mkcert`.
 $ mkcert uwu.so www.uwu.so staging.uwu.so api.uwu.so api.staging.uwu.so i.uwu.so i.staging.uwu.so
 ```
 
+#### Statistics (Grafana dashboards)
+
+To expose the Grafana dashboards it needs to be exposed separately from the rest of the services as it's completely optional. It's recommended to use a reverse proxy to expose it.
+
 ## Migrating from Imagination Server
 
 Because this is a major update from Imagination Server—both in technologies used and the performance improvements these bring—both are incompatible, and there is no guarantee that any data from Imagination Server will be usable on Phantasia.
