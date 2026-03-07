@@ -85,3 +85,5 @@ $ mkcert uwu.so www.uwu.so staging.uwu.so api.uwu.so api.staging.uwu.so i.uwu.so
 ## Migrating from Imagination Server
 
 Because this is a major update from Imagination Server—both in technologies used and the performance improvements these bring—both are incompatible, and there is no guarantee that any data from Imagination Server will be usable on Phantasia.
+
+Currently there is no migration path from Imagination Server to Phantasia, however the semi-automatic migration script will be added and instructions appended to this README in the future.
