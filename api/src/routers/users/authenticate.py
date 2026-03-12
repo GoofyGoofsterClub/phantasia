@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status
 from src.models.user import User
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -13,7 +13,7 @@ class AuthenticatedUserDetails(BaseModel):
 
 class AuthenticatedUser(BaseModel):
     authenticated: bool
-    user: AuthenticatedUserDetails
+    user: Optional[AuthenticatedUserDetails] = None
 
 
 @router.get("/authenticate", status_code=200,
