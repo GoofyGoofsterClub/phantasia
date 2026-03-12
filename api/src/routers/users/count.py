@@ -5,5 +5,5 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.get("/count")
 async def user_count():
-    count = await User.all().count()
+    count = await User.all().only("id").count()
     return {"count": count}
