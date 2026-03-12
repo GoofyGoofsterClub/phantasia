@@ -19,7 +19,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https?://(?:.+\.)?uwu\.(?:local|so)(?::\d+)?",
+    allow_origin_regex=r"https?://(?:[a-z0-9-]+\.)*(?:staging\.)?uwu\.(?:local|so)(?::\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
