@@ -6,7 +6,7 @@
     <NuxtLink href="#" draggable="false" class="right-aligned-button" @click.prevent="toggleDashboard" :class="{ active: isDashboardLoginPanelActive || isRouteActive('/dashboard') }">Dashboard</NuxtLink>
     <div class="dashboard-login-board" :class="{ active: isDashboardLoginPanelActive }">
       <div>
-        <input placeholder="Access Key" type="password" :disabled="isAuthContentDisabled" v-show="!isAuthContentHidden">
+        <input v-model="accessKeyInput" placeholder="Access Key" type="password" :disabled="isAuthContentDisabled" v-show="!isAuthContentHidden">
         <button v-show="!isAuthContentHidden" :disabled="isAuthContentDisabled" @click="tryLogin">Auth</button>
         <p v-show="isAuthContentHidden">{{ authErrorMessage }}</p>
       </div>
@@ -16,13 +16,21 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
+const router = useRouter()
+const accessKeyInput = ref('')
 const isDashboardLoginPanelActive = ref(false)
 const isAuthContentDisabled = ref(false)
 
 const toggleDashboard = () => {
-  if(isRouteActive("/dashboard")) return;
+  if (authStore.isLoggedIn) {
+    router.push('/dashboard')
+    isDashboardLoginPanelActive.value = false
+    return
+  }
   isDashboardLoginPanelActive.value = !isDashboardLoginPanelActive.value
 }
 
@@ -35,12 +43,39 @@ const isRouteActive = (path: string) => {
 const isAuthContentHidden = ref(false)
 const authErrorMessage = ref('')
 
-const tryLogin = async () =>
-{
-  isAuthContentDisabled.value = true;
+const tryLogin = async () => {
+  if (!accessKeyInput.value) {
+    setLoginError('Please enter an access key')
+    return
+  }
+
+  isAuthContentDisabled.value = true
+  try {
+    const data = await $fetch<{ authenticated: boolean; user: any }>('https://api.uwu.local/users/authenticate', {
+      params: { access_key: accessKeyInput.value }
+    })
+
+    if (data.authenticated) {
+      authStore.setSession(data.user, accessKeyInput.value)
+      isDashboardLoginPanelActive.value = false
+      router.push('/dashboard')
+    }
+  } catch (error: any) {
+    if(!error.data.authenticated)
+    {
+      setLoginError('Invalid access key')
+    }
+    else
+    {
+      setLoginError('An error occurred during authentication')
+    }
+  } finally {
+    isAuthContentDisabled.value = false
+    accessKeyInput.value = ''
+  }
 }
 
-function setLoginError(errorMessage)
+function setLoginError(errorMessage: string)
 {
   isAuthContentHidden.value = true
   authErrorMessage.value = errorMessage

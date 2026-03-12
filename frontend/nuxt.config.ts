@@ -23,7 +23,8 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/scripts',
-    'nuxt-charts'
+    'nuxt-charts',
+    '@pinia/nuxt'
   ],
   fonts:
   {

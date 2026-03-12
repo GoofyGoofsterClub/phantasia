@@ -6,12 +6,13 @@
       <NuxtLink to="#" :class="{ active: currentInternalPage == 'overview' }">overview</NuxtLink>
       <NuxtLink to="#" :class="{ active: currentInternalPage == 'uploads' }">uploads</NuxtLink>
       <NuxtLink to="#" :class="{ active: currentInternalPage == 'admin' }">admin</NuxtLink>
-      <NuxtLink to="#"><Icon name="material-symbols:logout" /></NuxtLink>
+      <NuxtLink to="#" @click.prevent="handleLogout"><Icon name="material-symbols:logout" /></NuxtLink>
     </div>
     <div class="dashboard-page-content">
-      <h2>Welcome back, {{ username }}!</h2>
+      <h2>Welcome back, {{ authStore.session?.username || 'User' }}!</h2>
       <div class="flex-block">
-        <div class="card" style="flex: 0 0 calc(33.333% - 0.5rem);">
+        <div id="upload-button" class="card" style="flex: 0 0 calc(33.333% - 0.5rem);" @click="triggerFileUpload">
+          <input type="file" ref="fileInput" style="display: none" @change="handleFileUpload" />
           <button class="big-upload-button">
             <Icon name="solar:upload-broken" />
             <span class="sub-text">Upload a file</span>
@@ -45,9 +46,49 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
+const router = useRouter()
 const currentInternalPage = ref('overview')
-const username = ref('mishashto')
+const fileInput = ref<HTMLInputElement | null>(null)
+
+const triggerFileUpload = () => {
+  fileInput.value?.click()
+}
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push('/')
+}
+
+const handleFileUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  try {
+    const response = await $fetch('https://api.uwu.local/uploads/create', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': `Token ${authStore.accessKey}`
+      }
+    })
+    console.log('Upload successful:', response)
+    alert('Upload successful!')
+  } catch (error) {
+    console.error('Upload failed:', error)
+    alert('Upload failed. Check console for details.')
+  } finally {
+    // Reset the input value so the same file can be uploaded again if needed
+    target.value = ''
+  }
+}
 
 // chart
 interface AreaChartItem {
@@ -223,7 +264,7 @@ const sum = (arr, key) => arr.reduce((sum, obj) => sum + obj[key], 0)
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/css/colors";
+@use "@/assets/css/colors" as *;
 .internal-navbar
 {
   width: 100%;
