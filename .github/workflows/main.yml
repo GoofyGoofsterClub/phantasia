@@ -21,18 +21,18 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
-        name: Build and push
+        name: Build and push api
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./api
           file: ./api/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/phantasia-api:latest
       -
-        name: Build and push modified postgres
+        name: Build and push frontend
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./frontend
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/phantasia-frontend:latest
